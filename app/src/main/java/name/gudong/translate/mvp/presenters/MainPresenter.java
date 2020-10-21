@@ -216,7 +216,6 @@ public class MainPresenter extends BasePresenter<IMainView> {
                         result.setUpdate_time(System.currentTimeMillis());
 
                         recordHistoryWords(result);
-                        trackTranslate();
 
                         if (mView == null) return null;
                         mView.addTagForView(result);
@@ -254,7 +253,6 @@ public class MainPresenter extends BasePresenter<IMainView> {
                     @Override
                     public Observable<String> call(List<String> strings) {
                         if (strings == null) {
-                            trackTranslateFail("啥也没有翻译出来");
                             return Observable.error(new Exception(("啥也没有翻译出来!")));
                         }
                         return Observable.from(strings);
@@ -276,7 +274,6 @@ public class MainPresenter extends BasePresenter<IMainView> {
                         if (mView != null) {
                             mView.onError(e);
                         }
-                        trackTranslateFail(e.getMessage());
                     }
 
                     @Override
@@ -305,7 +302,7 @@ public class MainPresenter extends BasePresenter<IMainView> {
      */
     public void gotoMarket() {
         try {
-            Uri uri = Uri.parse("market://details?id=" + getContext().getPackageName());
+            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=lixiaoliang.yao.imarkdown");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
@@ -323,7 +320,6 @@ public class MainPresenter extends BasePresenter<IMainView> {
         int index = staticTranslateWayList.indexOf(from);
         index = index >= 0 ? index : 0;
         mView.initTranslateSelect(index);
-        AnswerUtil.showMainView(from.getName());
     }
 
     /**
@@ -396,7 +392,6 @@ public class MainPresenter extends BasePresenter<IMainView> {
         int day = c.get(Calendar.DAY_OF_MONTH);// 获取当日期
         if (year == 2018 && month == 2) {
             if (day >= 16 && day <= 21) {
-                AnswerUtil.showEggs();
                 mView.playNewYearAnim();
             }
         }

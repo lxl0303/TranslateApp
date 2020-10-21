@@ -96,7 +96,6 @@ public class TipFloatPresenter extends BasePresenter<ITipFloatView> {
                         if (e instanceof SocketTimeoutException) {
                             String msg = "网络请求超时，请稍后重试。";
                             mView.errorPoint(msg);
-                            trackTranslateFail(msg);
                         } else {
                             String msg = "网络请求超时，请稍后重试。";
                             if (BuildConfig.DEBUG) {
@@ -106,14 +105,12 @@ public class TipFloatPresenter extends BasePresenter<ITipFloatView> {
                                 msg = "请求数据异常(source:"+from.getName()+")，您可以试试切换其他引擎。";
                             }
                             mView.errorPoint(msg);
-                            trackTranslateFail(msg);
                         }
                     }
 
                     @Override
                     public void onNext(AbsResult result) {
                         if (mView == null) return;
-                        trackTranslate();
                         Result realResult = result.getResult();
                         realResult.setCreate_time(System.currentTimeMillis());
                         realResult.setUpdate_time(System.currentTimeMillis());
@@ -164,25 +161,21 @@ public class TipFloatPresenter extends BasePresenter<ITipFloatView> {
         // empty check
         if (TextUtils.isEmpty(input)) {
             Logger.e("剪贴板为空了");
-            trackTranslateFail("剪贴板为空了");
             return false;
         }
 
         if (StringUtils.isValidEmailAddress(input)) {
             Logger.e(input + " 是一个邮箱");
-            trackTranslateFail(input + " 是一个邮箱");
             return false;
         }
 
         if (StringUtils.isValidUrl(input)) {
             Logger.e(input + " 是一个网址");
-            trackTranslateFail(input + " 是一个网址");
             return false;
         }
 
         if (StringUtils.isValidNumeric(input)) {
             Logger.e(input + " 是一串数字");
-            trackTranslateFail(input + " 是一串数字");
             return false;
         }
 
@@ -193,13 +186,11 @@ public class TipFloatPresenter extends BasePresenter<ITipFloatView> {
 
         if (StringUtils.isChinese(input)) {
             Logger.e(input + " 中包含中文字符");
-            trackTranslateFail(input + " 中包含中文字符");
             return false;
         }
 
         if(StringUtils.isMoreThanOneWord(input)){
             mView.errorPoint("咕咚翻译目前不支持划句或者划短语翻译\n多谢理解");
-            trackTranslateFail("咕咚翻译目前不支持划句或者划短语翻译\n多谢理解");
             return false;
         }
 

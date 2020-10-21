@@ -7,8 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
-
 import name.gudong.translate.R;
 import moe.feng.alipay.zerosdk.AlipayZeroSdk;
 import name.gudong.translate.ui.activitys.MainActivity;
@@ -61,14 +59,11 @@ public class DialogUtil {
     public static void showSupport(AppCompatActivity activity) {
         showCustomDialogWithTwoAction(activity, activity.getSupportFragmentManager(),
                 "支持开发者", "donate_ch.html", "donate",
-                "关闭", ((dialog1, which1) -> MobclickAgent.onEvent(activity, "menu_support_close")),
+                "关闭", null,
                 "打开支付宝转账页面", (dialog, which) -> {
-                    MobclickAgent.onEvent(activity, "menu_support_click");
-                    AnswerUtil.actionSupportPay();
                     if (AlipayZeroSdk.hasInstalledAlipayClient(activity)) {
                         AlipayZeroSdk.startAlipayClient(activity, "aex07094cljuqa36ku7ml36");
                     } else {
-                        MobclickAgent.onEvent(activity, "menu_support_click_but_have_not_alipay");
                         Toast.makeText(activity, activity.getString(R.string.support_fail_because_not_install), Toast.LENGTH_LONG).show();
                     }
                 });

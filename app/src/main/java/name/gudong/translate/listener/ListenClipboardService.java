@@ -39,7 +39,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.orhanobut.logger.Logger;
-import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -206,8 +205,6 @@ public final class ListenClipboardService extends Service implements ITipFloatVi
 
     @Override
     public void onClickFavorite(View view, Result result) {
-        MobclickAgent.onEvent(this, "favorite_service");
-        AnswerUtil.actionFavorite("listenClipboard");
         mPresenter.startFavoriteAnim(view, new BasePresenter.AnimationEndListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -218,14 +215,12 @@ public final class ListenClipboardService extends Service implements ITipFloatVi
 
     @Override
     public void onClickPlaySound(View view, Result result) {
-        AnswerUtil.actionSound("listenClipboard");
         mPresenter.playSound(result.getMp3FileName(),result.getEnMp3());
         mPresenter.startSoundAnim(view);
     }
 
     @Override
     public void onClickDone(View view, Result result) {
-        MobclickAgent.onEvent(this, "click_done");
         mPresenter.markDone(result);
         startMarkDoneAnim(view);
 

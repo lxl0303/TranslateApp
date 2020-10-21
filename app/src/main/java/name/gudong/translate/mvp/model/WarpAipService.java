@@ -20,6 +20,8 @@
 
 package name.gudong.translate.mvp.model;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,7 +122,7 @@ public class WarpAipService {
                 else {
                     targetLanguage = BuildConfig.GOOGLE_LANGUAGE_ENGLISH;
                 }
-
+                Logger.e("google api :" + query.toString());
                 resultObservable = mApiGoogle.translateGoogle(query, targetLanguage)
                         .flatMap(new Func1<ResponseBody, Observable<AbsResult>>() {
                             @Override

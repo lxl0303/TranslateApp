@@ -13,8 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import javax.inject.Inject;
 
 import name.gudong.translate.injection.components.AppComponent;
@@ -94,7 +92,6 @@ public class ProcessTextActivity extends BaseActivity<TipFloatPresenter> impleme
 
     @Override
     public void onClickFavorite(View view, Result result) {
-        AnswerUtil.actionFavorite("androidMProcessEditor");
         mPresenter.startFavoriteAnim(view, new BasePresenter.AnimationEndListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -105,7 +102,6 @@ public class ProcessTextActivity extends BaseActivity<TipFloatPresenter> impleme
 
     @Override
     public void onClickPlaySound(View view, Result result) {
-        AnswerUtil.actionSound("androidMProcessEditor");
         mPresenter.playSound(result.getMp3FileName(),result.getEnMp3());
         mPresenter.startSoundAnim(view);
     }

@@ -29,12 +29,9 @@ import com.google.gson.reflect.TypeToken;
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.orhanobut.logger.Logger;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;

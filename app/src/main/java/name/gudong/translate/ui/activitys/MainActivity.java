@@ -54,7 +54,6 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.JsonSyntaxException;
-import com.umeng.analytics.MobclickAgent;
 
 import java.net.UnknownHostException;
 import java.util.List;
@@ -130,7 +129,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         initSpinner();
         checkTranslateWay();
         checkVersion();
-        setUpDayline(false);
+        setUpDayline(true);
         checkIntent();
         if (Utils.checkDrawOverlaysPermissionGranted(this)) {
             guideCheck();
@@ -165,7 +164,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         //每日一句
         if (getIntent().getBooleanExtra("from_dayline_remind", false)) {
             onClickBottomSheet();
-            MobclickAgent.onEvent(getApplicationContext(), "enter_mainactivity_by_click_notification_dayline");
             mIvSoundDayline.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -274,36 +272,27 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         switch (item.getItemId()) {
             case R.id.menu_opinion:
                 NavigationManager.gotoSendEmail(this);
-                MobclickAgent.onEvent(this, "menu_opinion");
                 break;
             case R.id.menu_book:
                 WordsBookActivity.gotoWordsBook(this);
-                MobclickAgent.onEvent(this, "open_book");
                 break;
             case R.id.menu_hist:
                 WordsBookActivity.gotoWordsHist(this);
-                MobclickAgent.onEvent(this, "open_history");
                 break;
             case R.id.menu_about:
 //                DialogUtil.showAbout(this, formatAboutVersion());
                 NavigationManager.gotoAboutActivity(this);
-                MobclickAgent.onEvent(this, "menu_about");
-                AnswerUtil.actionShowAbout();
                 closeKeyboard();
                 break;
             case R.id.menu_setting:
-                MobclickAgent.onEvent(this, "menu_setting");
                 closeKeyboard();
                 NavigationManager.gotoSetting(this);
                 break;
             case R.id.menu_score:
                 mPresenter.gotoMarket();
-                MobclickAgent.onEvent(this, "menu_score");
                 break;
             case R.id.menu_support:
                 DialogUtil.showSupport(this);
-                MobclickAgent.onEvent(this, "menu_support");
-                AnswerUtil.actionSupport();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -330,7 +319,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private void addListener() {
         mInput.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                MobclickAgent.onEvent(this, "action_translate_by_keyboard");
                 mInput.dismissDropDown();
                 translate();
                 return true;
@@ -439,7 +427,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             msg = getString(R.string.tip_unknown) + (BuildConfig.DEBUG ? "  " + e.getMessage() : "");
             e.printStackTrace();
         }
-        mPresenter.trackTranslateFail(msg);
         mList.addView(ViewUtil.getWordsView(MainActivity.this, msg, android.R.color.holo_red_light, false));
         mBtTranslate.setEnabled(true);
         mBtTranslate.setText(R.string.action_translate);
@@ -457,20 +444,17 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @OnClick(R.id.bt_translate)
     public void onClickTranslate(View view) {
-        MobclickAgent.onEvent(getApplicationContext(), "action_translate");
         translate();
     }
 
     @OnClick(R.id.tv_clear)
     public void onClickClear(View view) {
-        MobclickAgent.onEvent(getApplicationContext(), "action_clear");
         resetView();
         InputMethodUtils.openSoftKeyboard(this, mInput);
     }
 
     @OnClick(R.id.tv_point)
     public void onClickInputPoint(View view) {
-        MobclickAgent.onEvent(getApplicationContext(), "action_input_point");
         mInput.requestFocus();
     }
 
@@ -498,7 +482,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @OnClick(R.id.iv_favorite)
     public void onClickFavorite(final View view) {
-        AnswerUtil.actionFavorite("main");
         mPresenter.startFavoriteAnim(view, new BasePresenter.AnimationEndListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -517,14 +500,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 }
             }
         });
-        MobclickAgent.onEvent(getApplicationContext(), "favorite_main");
     }
 
     @OnClick(R.id.iv_paste)
     public void onClickPaste(View view) {
         closeKeyboard();
         Toast.makeText(MainActivity.this, "长按翻译结果可复制", Toast.LENGTH_SHORT).show();
-        MobclickAgent.onEvent(getApplicationContext(), "action_paste");
     }
 
     @OnClick(R.id.iv_sound)
@@ -537,8 +518,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             mPresenter.playSound(fileName, mp3Url);
         }
         mPresenter.startSoundAnim(view);
-        MobclickAgent.onEvent(getApplicationContext(), "sound_main_activity");
-        AnswerUtil.actionSound("main");
     }
 
     @Override
@@ -595,7 +574,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @OnClick(R.id.iv_sound_dayline)
     public void onClickDaylineSound(View view) {
-        MobclickAgent.onEvent(getApplicationContext(), "sound_dayline_activity");
         Object obj = view.getTag();
         if (obj != null && obj instanceof IDayLine) {
             IDayLine entity = (IDayLine) obj;

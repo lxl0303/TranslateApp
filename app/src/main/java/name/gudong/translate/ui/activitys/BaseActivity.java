@@ -25,8 +25,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.umeng.analytics.MobclickAgent;
-
 import javax.inject.Inject;
 
 import name.gudong.translate.GDApplication;
@@ -59,13 +57,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
     }
     protected void initActionBar(boolean homeButtonEnable,String title){
         getSupportActionBar().setHomeButtonEnabled(homeButtonEnable);

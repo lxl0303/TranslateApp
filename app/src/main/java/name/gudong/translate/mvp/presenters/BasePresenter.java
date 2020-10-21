@@ -240,14 +240,6 @@ public class BasePresenter<V extends IBaseView> {
         });
     }
 
-    void trackTranslate(){
-        AnswerUtil.translateSuccess();
-    }
-
-    public void trackTranslateFail(String msg){
-        AnswerUtil.translateFail(msg);
-    }
-
 
     void recordHistoryWords(Result entity) {
         if(entity==null){
